@@ -1,0 +1,21 @@
+
+S	java:S1062"9Replace this use of System.out or System.err by a logger.( µ –şÿÿÿÿ
+N	java:S1064"9Replace this use of System.out or System.err by a logger.(½ùÍ
+N	java:S106;"9Replace this use of System.out or System.err by a logger.(ÊŒ‚ì
+S	java:S106@"9Replace this use of System.out or System.err by a logger.(½Ğ™ùÿÿÿÿ
+f	java:S117>"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ã±¾ò
+f	java:S117B"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Øï‚›
+f	java:S117H"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ıËÿ†
+f	java:S117v"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(şĞŸ›
+f	java:S117€"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®áŠ:
+l	java:S117Š"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡à™İÿÿÿÿÿ
+t
+java:S1488i"YImmediately return this expression instead of assigning it to the temporary variable "a".(£æ„øÿÿÿÿ
+t
+java:S1488o"^Immediately return this expression instead of assigning it to the temporary variable "arList".(Ñ•
+s
+java:S1488“"]Immediately return this expression instead of assigning it to the temporary variable "aList".(¡å™
+y
+java:S1488™"]Immediately return this expression instead of assigning it to the temporary variable "aList".(à›ãÖúÿÿÿÿ
+t
+java:S1488Ÿ"]Immediately return this expression instead of assigning it to the temporary variable "aList".(ÿ‡ÃÛ

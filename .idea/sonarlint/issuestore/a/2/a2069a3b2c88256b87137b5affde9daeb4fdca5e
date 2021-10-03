@@ -1,0 +1,45 @@
+
+5
+java:S3751#"Make this method "public".(ÄÅìıÿÿÿÿ
+N	java:S106$"9Replace this use of System.out or System.err by a logger.(Ù‡ñ¿
+5
+java:S3751+"Make this method "public".(í§Éüÿÿÿÿ
+S	java:S106,"9Replace this use of System.out or System.err by a logger.(¸ü§äúÿÿÿÿ
+5
+java:S37518"Make this method "public".(üÖİËùÿÿÿÿ
+S	java:S1069"9Replace this use of System.out or System.err by a logger.(Ç…Éæıÿÿÿÿ
+0
+java:S3751B"Make this method "public".(çî‹
+S	java:S106C"9Replace this use of System.out or System.err by a logger.(ÅªÚ·øÿÿÿÿ
+0
+java:S3751I"Make this method "public".(ªéÙÄ
+S	java:S106J"9Replace this use of System.out or System.err by a logger.(Ûöá½úÿÿÿÿ
+0
+java:S3751P"Make this method "public".(ÈüéÉ
+S	java:S106Q"9Replace this use of System.out or System.err by a logger.(®ÕıÄıÿÿÿÿ
+5
+java:S3751["Make this method "public".(Ûšø¼ÿÿÿÿÿ
+S
+java:S1197["8Move the array designator from the variable to the type.(Ûšø¼ÿÿÿÿÿ
+N	java:S106\"9Replace this use of System.out or System.err by a logger.(½ö£ç
+5
+java:S3751d"Make this method "public".(’Ùöòşÿÿÿÿ
+N	java:S106e"9Replace this use of System.out or System.err by a logger.(Ã³éÅ
+5
+java:S3751l"Make this method "public".(ûÛŸ¯ùÿÿÿÿ
+N	java:S106m"9Replace this use of System.out or System.err by a logger.(Àãüş
+N	java:S106n"9Replace this use of System.out or System.err by a logger.(ã¯—
+x
+java:S1488%"]Immediately return this expression instead of assigning it to the temporary variable "uList".(ÄÂº¬ıÿÿÿÿ
+r
+java:S14883"\Immediately return this expression instead of assigning it to the temporary variable "flag".(”÷ì
+x
+java:S1488D"]Immediately return this expression instead of assigning it to the temporary variable "aList".(Ğ¤Ùæüÿÿÿÿ
+r
+java:S1488K"\Immediately return this expression instead of assigning it to the temporary variable "flag".(İÌ×÷
+x
+java:S1488U"]Immediately return this expression instead of assigning it to the temporary variable "aList".(‡Ó˜œøÿÿÿÿ
+w
+java:S1488]"\Immediately return this expression instead of assigning it to the temporary variable "flag".(±ü­ùÿÿÿÿ
+x
+java:S1488f"]Immediately return this expression instead of assigning it to the temporary variable "aList".(»†ÄÏıÿÿÿÿ

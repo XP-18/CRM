@@ -1,0 +1,24 @@
+
+J
+java:S3740|"/Provide the parametrized type for this generic.(ßÇ‚«şÿÿÿÿ
+0
+java:S3751#"Make this method "public".(µ‰÷Ô
+S	java:S106$"9Replace this use of System.out or System.err by a logger.(——ö‘øÿÿÿÿ
+5
+java:S3751."Make this method "public".(ì–ò­øÿÿÿÿ
+S	java:S106/"9Replace this use of System.out or System.err by a logger.(³ïí¿ûÿÿÿÿ
+5
+java:S37516"Make this method "public".(µ«Òšÿÿÿÿÿ
+N	java:S1067"9Replace this use of System.out or System.err by a logger.(—ˆï‡
+5
+java:S3751K"Make this method "public".(õÚµ¾ûÿÿÿÿ
+S	java:S106M"9Replace this use of System.out or System.err by a logger.(Ç…Éæıÿÿÿÿ
+5
+java:S3751f"Make this method "public".(Éã£şÿÿÿÿ
+N	java:S106h"9Replace this use of System.out or System.err by a logger.(â—µ„
+5
+java:S3751|"Make this method "public".(ßÇ‚«şÿÿÿÿ
+N	java:S106}"9Replace this use of System.out or System.err by a logger.(‹æ×
+k	java:S117f"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Éã£şÿÿÿÿ
+s
+java:S14880"]Immediately return this expression instead of assigning it to the temporary variable "sList".(’¨‚Ğ
