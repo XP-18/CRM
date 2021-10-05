@@ -12,7 +12,9 @@ import top.xp18.crm.workbench.service.TranService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TranServiceImpl implements TranService {
@@ -126,5 +128,13 @@ public class TranServiceImpl implements TranService {
             flag = false;
         }
         return flag;
+    }
+
+    @Override
+    public Map<String, Object> forTranPage(Map map) {
+        Map<String, Object> map1=new HashMap<>();
+        map1.put("dataList",tranDao.forPage(map));
+        map1.put("total",tranDao.getNums(map));
+        return map1;
     }
 }

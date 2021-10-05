@@ -49,5 +49,13 @@ public class UserServiceImpl implements UserService {
         List<User> ulist=userDao.getUserList();
         return ulist;
     }
+
+    @Override
+    public Map addUser(User user) {
+        Map map=new HashMap();
+        int flag=userDao.insert(user);
+        map.put("success",flag==1);
+        return map;
+    }
 }
 

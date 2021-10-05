@@ -46,6 +46,51 @@
                   )
 
     </insert>
+   <select id="forPage" resultType="Contacts">
+      select
+      c.id, u.name as  owner, c.source, c.customerId, c.fullname, c.appellation, c.email, c.mphone, c.job, c.birth, c.createBy, c.createTime, c.editBy,
+      c.editTime, c.description, contactSummary, c.nextContactTime, c.address
+      from crm.tbl_contacts c  join crm.tbl_user u on c.owner=u.id
+      <where>
+
+         <if test="owner != null and owner != ''">
+            and owner like concat("%",#{owner},"%")
+         </if>
+         <if test="source != null and source != ''">
+            and source like concat("%",#{source},"%")
+         </if>
+
+         <if test="fullname != null and fullname != ''">
+            and fullname like concat("%",#{fullname},"%")
+         </if>
+         <if test="appellation != null and appellation != ''">
+            and appellation like concat("%",#{appellation},"%")
+         </if>
+      </where>
+      order by c.createTime
+      limit #{skipCount},#{pageSize}
+
+   </select>
+
+   <select id="getNums" resultType="int">
+      select count(*) from crm.tbl_contacts c  join crm.tbl_user u on c.owner=u.id
+      <where>
+
+         <if test="owner != null and owner != ''">
+            and owner like concat("%",#{owner},"%")
+         </if>
+         <if test="source != null and source != ''">
+            and source like concat("%",#{source},"%")
+         </if>
+
+         <if test="fullname != null and fullname != ''">
+            and fullname like concat("%",#{fullname},"%")
+         </if>
+         <if test="appellation != null and appellation != ''">
+            and appellation like concat("%",#{appellation},"%")
+         </if>
+      </where>
+   </select>
 	
   	
 </mapper>

@@ -298,7 +298,7 @@ Map<String,String> pMap = (Map<String,String>)application.getAttribute("pMap");
 				  </c:forEach>
 				</select>
 			</div>
-			<label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findMarketActivity"><span class="glyphicon glyphicon-search"></span></a></label>
+			<label for="create-activitySrc" class="col-sm-2 control-label">市场活动源&nbsp;&nbsp;<a href="javascript:void(0);" ></span></a></label>
 			<div class="col-sm-10" style="width: 300px;">
 				<input type="text" class="form-control" id="create-activitySrc" value="推广11">
 				<input type="hidden" value="0b815e554a0c45ccb9a4a1e0d599b818" name="activityId"/>
@@ -306,7 +306,7 @@ Map<String,String> pMap = (Map<String,String>)application.getAttribute("pMap");
 		</div>
 		
 		<div class="form-group">
-			<label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" data-toggle="modal" data-target="#findContacts"><span class="glyphicon glyphicon-search"></span></a></label>
+			<label for="create-contactsName" class="col-sm-2 control-label">联系人名称&nbsp;&nbsp;<a href="javascript:void(0);" ></a></label>
 			<div class="col-sm-10" style="width: 300px;">
 				<input type="text" class="form-control" id="create-contactsName" value="张">
 				<input type="hidden" value="f072a42dad3f453398e65bea1cd64e38" name="contactsId"/>

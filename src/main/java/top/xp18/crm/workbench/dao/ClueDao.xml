@@ -84,7 +84,59 @@
                 #{address}
                 )
     </insert>
-	
+        <select id="selectForPage" resultType="Clue">
+                select
+                c.id, fullname, appellation, u.name as owner, company, job, c.email, c.phone, website, mphone, state, source, c.createBy,
+                c.createTime, c.editBy, c.editTime, c.description, c.contactSummary, c.nextContactTime, c.address
+                from crm.tbl_clue c join tbl_user u on c.owner=u.id
+                <where>
+
+                        <if test="fullname != null and fullname != ''">
+                                and fullname like concat('%',#{fullname},'%')
+                        </if>
+                        <if test="company != null and company != ''">
+                                and company like concat("%",#{company},"%")
+                        </if>
+                        <if test="phone != null and phone != ''">
+                                and phone like concat("%",#{phone},"%")
+                        </if>
+                        <if test="mphone != null and mphone != ''">
+                                and mphone like concat("%",#{mphone},"%")
+                        </if>
+                        <if test="state != null and state != ''">
+                                and state like concat("%",#{state},"%")
+                        </if>
+                        <if test="source != null and source != ''">
+                                and source like concat("%",#{source},"%")
+                        </if>
+                </where>
+                order by c.createTime
+                limit #{skipCount},#{pageSize}
+        </select>
+	<select id="queryNums" resultType="int">
+            select count(*) from crm.tbl_clue c join tbl_user u on c.owner=u.id
+            <where>
+
+                    <if test="fullname != null and fullname != ''">
+                            and fullname = concat('%',#{fullname},'%')
+                    </if>
+                    <if test="company != null and company != ''">
+                            and company = concat("%",#{company},"%")
+                    </if>
+                    <if test="phone != null and phone != ''">
+                            and phone = concat("%",#{phone},"%")
+                    </if>
+                    <if test="mphone != null and mphone != ''">
+                            and mphone = concat("%",#{mphone},"%")
+                    </if>
+                    <if test="state != null and state != ''">
+                            and state = concat("%",#{state},"%")
+                    </if>
+                    <if test="source != null and source != ''">
+                            and source = concat("%",#{source},"%")
+                    </if>
+            </where>
+    </select>
 	
   	
 </mapper>

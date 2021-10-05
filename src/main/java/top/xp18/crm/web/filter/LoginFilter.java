@@ -23,7 +23,7 @@ public class LoginFilter implements Filter {
         System.out.println("进入到验证登录的过滤器了");
         HttpServletRequest request= (HttpServletRequest) req;
         HttpServletResponse response= (HttpServletResponse) resp;
-        if("/login.jsp".equals(request.getServletPath())||"/user/login.do".equals(request.getServletPath())){
+        if("/login.jsp".equals(request.getServletPath())||"/user/login.do".equals(request.getServletPath())||"/user/add.do".equals(request.getServletPath())){
             chain.doFilter(req,resp);
         }else{
             HttpSession session=request.getSession();

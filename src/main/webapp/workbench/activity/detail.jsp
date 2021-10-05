@@ -142,6 +142,9 @@ String basePath = request.getScheme() +
                 $("#updateRemarkBtn")[0].click();
             }
         })
+        $("#returnBtn").click(function () {
+            window.history.back();
+        })
 
     });
 
@@ -323,8 +326,8 @@ String basePath = request.getScheme() +
 			<h3>市场活动-${a.name} <small>${a.startDate} ~ ${a.endDate}</small></h3>
 		</div>
 		<div style="position: relative; height: 50px; width: 250px;  top: -72px; left: 700px;">
-			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
-			<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+			<button type="button" class="btn btn-return" id="returnBtn"><span class="glyphicon glyphicon-arrow-left
+"></span> 返回</button>
 		</div>
 	</div>
 	

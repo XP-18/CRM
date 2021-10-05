@@ -2,26 +2,26 @@ package top.xp18.crm.workbench.service.impl;
 
 import top.xp18.crm.utils.DateTimeUtil;
 import top.xp18.crm.utils.UUIDUtil;
-import com.hx.crm.workbench.dao.*;
-import com.hx.crm.workbench.domain.*;
 import top.xp18.crm.workbench.dao.*;
 import top.xp18.crm.workbench.domain.*;
 import top.xp18.crm.workbench.service.ClueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ClueServiceImpl implements ClueService {
-//    线索相关表
+    //    线索相关表
     @Autowired
     private ClueDao clueDao;
     @Autowired
     private ClueActivityRelationDao clueActivityRelationDao;
     @Autowired
     private ClueRemarkDao clueRemarkDao;
-//    交易相关表
+    //    交易相关表
     @Autowired
     private CustomerDao customerDao;
     @Autowired
@@ -32,7 +32,7 @@ public class ClueServiceImpl implements ClueService {
     private ContactsRemarkDao contactsRemarkDao;
     @Autowired
     private ContactsActivityRelationDao contactsActivityRelationDao;
-//    转换相关表
+    //    转换相关表
     @Autowired
     private TranDao tranDao;
     @Autowired
@@ -40,46 +40,46 @@ public class ClueServiceImpl implements ClueService {
 
     @Override
     public boolean save(Clue clue) {
-        boolean flag=true;
-        int Count= clueDao.save(clue);
-        if(Count!=1){
-            flag=false;
+        boolean flag = true;
+        int Count = clueDao.save(clue);
+        if (Count != 1) {
+            flag = false;
         }
         return flag;
     }
 
     @Override
     public Clue detail(String id) {
-        Clue c=clueDao.detail(id);
+        Clue c = clueDao.detail(id);
         return c;
     }
 
     @Override
     public boolean unbund(String id) {
-        boolean flag=true;
-        int Count=clueActivityRelationDao.unbund(id);
-        if(Count!=1){
-            flag=false;
+        boolean flag = true;
+        int Count = clueActivityRelationDao.unbund(id);
+        if (Count != 1) {
+            flag = false;
         }
         return flag;
     }
 
     @Override
     public boolean bund(String[] aid, String cid) {
-        boolean flag=true;
+        boolean flag = true;
 
 //        把数组遍历了
-        for(String id:aid){
+        for (String id : aid) {
 //            取得每一个aid和cid做关联
-            ClueActivityRelation car=new ClueActivityRelation();
+            ClueActivityRelation car = new ClueActivityRelation();
             car.setId(UUIDUtil.getUUID());
             car.setClueId(cid);
             car.setActivityId(id);
 
 //            执行添加关联关系表中的记录
-            int Count=clueActivityRelationDao.bund(car);
-            if(Count!=1){
-                flag=false;
+            int Count = clueActivityRelationDao.bund(car);
+            if (Count != 1) {
+                flag = false;
             }
         }
         return flag;
@@ -87,9 +87,9 @@ public class ClueServiceImpl implements ClueService {
 
     @Override
     public boolean convert(String clueId, Tran t, String createBy) {
-        String createTime= DateTimeUtil.getSysTime();
+        String createTime = DateTimeUtil.getSysTime();
 
-        boolean flag=true;
+        boolean flag = true;
 
 //        （1）通过线索id获取线索对象（线索当中封装了线索的信息）
         Clue c = clueDao.getByid(clueId);
@@ -98,10 +98,10 @@ public class ClueServiceImpl implements ClueService {
 
         String company = c.getCompany();
         Customer cus = customerDao.getCustomerByName(company);
-        if(cus==null){
+        if (cus == null) {
 
 //            说明以前没有这个客户 需要新建一个
-            cus=new Customer();
+            cus = new Customer();
             cus.setId(UUIDUtil.getUUID());
             cus.setAddress(c.getAddress());
             cus.setWebsite(c.getWebsite());
@@ -116,14 +116,13 @@ public class ClueServiceImpl implements ClueService {
 
 //            添加客户
             int Count1 = customerDao.save(cus);
-            if(Count1!=1)
-            {
-                flag=false;
+            if (Count1 != 1) {
+                flag = false;
             }
         }
 
 //        （3）通过线索对象提取联系人信息，保存联系人(经过第二步之后客户对象已经有了，将来在处理其他表的时候，如果要使用客户的id，直接使用cus.id就可以了)
-        Contacts con=new Contacts();
+        Contacts con = new Contacts();
         con.setId(UUIDUtil.getUUID());
         con.setSource(c.getSource());
         con.setOwner(c.getOwner());
@@ -142,8 +141,8 @@ public class ClueServiceImpl implements ClueService {
         con.setAddress(c.getAddress());
 //        添加联系人
         int Count2 = contactsDao.save(con);
-        if(Count2 !=1){
-            flag=false;
+        if (Count2 != 1) {
+            flag = false;
         }
 //        经过第三步处理后，联系人的信息我们已经拥有了，将来在处理其他表的时候，如果要使用到联系人的id 直接使用con.getId
 
@@ -151,7 +150,7 @@ public class ClueServiceImpl implements ClueService {
 //        查询出与该线索关联的备注信息列表
         List<ClueRemark> clueRemarkList = clueRemarkDao.getListByClueId(clueId);
         //            取出每一条线索的备注
-        for (ClueRemark clueRemark:clueRemarkList) {
+        for (ClueRemark clueRemark : clueRemarkList) {
 
 //            取出备注信息
             String noteContent = clueRemark.getNoteContent();
@@ -186,28 +185,28 @@ public class ClueServiceImpl implements ClueService {
 
 //            （5）”线索和市场活动“ 的关系转换到”联系人和市场活动的关系“
 //            查询出该条线索关联的市场活动，查询与市场活动的关联关系列表
-            List<ClueActivityRelation> clueActivityRelationList = clueActivityRelationDao.getListByClueId(clueId);
+        List<ClueActivityRelation> clueActivityRelationList = clueActivityRelationDao.getListByClueId(clueId);
 //            遍历出每一条与市场活动关联的关联关系记录
-            for(ClueActivityRelation clueActivityRelation :clueActivityRelationList){
+        for (ClueActivityRelation clueActivityRelation : clueActivityRelationList) {
 
 //                从每一条遍历出来的记录中取出关联的市场活动id
-                String activityId=clueActivityRelation.getActivityId();
+            String activityId = clueActivityRelation.getActivityId();
 
-                /*创建联系人与市场活动的关联关系对象 让第三步生成的联系人与市场活动做关联*/
-                ContactsActivityRelation contactsActivityRelation =new ContactsActivityRelation();
-                contactsActivityRelation.setId(UUIDUtil.getUUID());
-                contactsActivityRelation.setActivityId(activityId);
-                contactsActivityRelation.setContactsId(con.getId());
+            /*创建联系人与市场活动的关联关系对象 让第三步生成的联系人与市场活动做关联*/
+            ContactsActivityRelation contactsActivityRelation = new ContactsActivityRelation();
+            contactsActivityRelation.setId(UUIDUtil.getUUID());
+            contactsActivityRelation.setActivityId(activityId);
+            contactsActivityRelation.setContactsId(con.getId());
 //                添加联系人与市场活动的关联关系
-                int Count5 = contactsActivityRelationDao.save(contactsActivityRelation);
-                if(Count5!=1){
-                    flag=false;
-                }
-
+            int Count5 = contactsActivityRelationDao.save(contactsActivityRelation);
+            if (Count5 != 1) {
+                flag = false;
             }
 
+        }
+
 //            如果有创建交易需求，创建一条交易
-        if(t!=null){
+        if (t != null) {
 
 //            t对象在controller里面已经封装好的信息如下
 //            id moner name expecteDate stage activityId createBy createTime，
@@ -221,7 +220,7 @@ public class ClueServiceImpl implements ClueService {
             t.setContactsId(con.getId());
 //            添加交易
             int Count6 = tranDao.save(t);
-            if(Count6 != 1){
+            if (Count6 != 1) {
                 flag = false;
             }
 
@@ -237,40 +236,55 @@ public class ClueServiceImpl implements ClueService {
 
 //            添加交易历史
             int Count7 = tranHistoryDao.save(tranHistory);
-            if(Count7!=1){
-                flag=false;
+            if (Count7 != 1) {
+                flag = false;
             }
         }
 
 //        (8)删除线索备注
-        for (ClueRemark clueRemark:clueRemarkList) {
+        for (ClueRemark clueRemark : clueRemarkList) {
 
             int Count8 = clueRemarkDao.delete(clueRemark);
-            if(Count8!=1){
-                flag=false;
+            if (Count8 != 1) {
+                flag = false;
             }
 
         }
 
 //        （9）删除线索和市场活动的关系
-        for(ClueActivityRelation clueActivityRelation :clueActivityRelationList){
+        for (ClueActivityRelation clueActivityRelation : clueActivityRelationList) {
 
 
-            int Count9=clueActivityRelationDao.delete(clueActivityRelation);
-            if(Count9!=1){
-                flag=false;
+            int Count9 = clueActivityRelationDao.delete(clueActivityRelation);
+            if (Count9 != 1) {
+                flag = false;
             }
 
         }
 
 //        （10）删除线索
         int Count10 = clueDao.delete(clueId);
-        if(Count10!=1){
-            flag=false;
+        if (Count10 != 1) {
+            flag = false;
         }
 
         return flag;
     }
 
+    @Override
+    public Map queryForPage(Map map) {
+        Map map1 = new HashMap();
+        map1.put("dataList", clueDao.selectForPage(map));
+        map1.put("total", clueDao.queryNums(map));
+        return map1;
+    }
 
+    @Override
+    public boolean deleteClu(List<String> idList) {
+        int flag = 0;
+        for(String id : idList) {
+            flag += clueDao.delete(id);
+        }
+        return flag == idList.size();
+    }
 }

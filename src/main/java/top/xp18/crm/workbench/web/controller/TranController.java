@@ -1,5 +1,6 @@
 package top.xp18.crm.workbench.web.controller;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import top.xp18.crm.settings.domain.User;
 import top.xp18.crm.settings.service.UserService;
 import top.xp18.crm.utils.DateTimeUtil;
@@ -138,6 +139,17 @@ public class TranController {
          return map;
 
      }
+    @RequestMapping("/pageList.do")
+    @ResponseBody
+    public Map<String, Object> pageForCon(@RequestParam Map<String, Object> map) {
+        int pageNo = Integer.parseInt((String) map.get("pageNo"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+//        计算出略过的数量
+        int skipCount = (pageNo - 1) * pageSize;
+        map.put("skipCount", skipCount);
+        map.replace("pageSize", pageSize);
+        return ts.forTranPage(map);
+    }
 
 
 }

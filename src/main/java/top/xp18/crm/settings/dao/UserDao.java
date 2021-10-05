@@ -9,4 +9,6 @@ public interface UserDao {
     User login(Map<String, Object> map);
 
     List<User> getUserList();
+
+    int insert(User user);
 }

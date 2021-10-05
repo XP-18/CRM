@@ -4,10 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.xp18.crm.settings.dao.UserDao">
     <select id="login" resultType="User">
-        select * from tbl_user where loginAct=#{loginAct} and loginPwd=#{loginPwd}
+        select *
+        from tbl_user
+        where loginAct = #{loginAct}
+          and loginPwd = #{loginPwd}
     </select>
 
     <select id="getUserList" resultType="User">
-        select * from tbl_user
+        select *
+        from tbl_user
     </select>
+    <insert id="insert">
+        insert into crm.tbl_user(id,loginact, name, loginpwd, email, expireTime, lockstate, deptno, allowips, createtime,
+                                 createby, editTime, editby)
+        values (#{id}, #{loginAct}, #{name}, #{loginPwd}, #{email}, #{expireTime}, #{lockState}, #{deptno}, #{allowIps},
+                #{createTime}, #{createBy}, #{editTime}, #{editBy})
+    </insert>
+
 </mapper>

@@ -33,6 +33,34 @@ String basePath = request.getScheme() +
 					login();
 				}
 			})
+			$("#createBtn").click(function () {
+				$("#createUserModal").modal("show");
+			})
+			$("#saveBtn").click(function (){
+				$.ajax({
+					url: "user/add.do",
+					data: {
+						"loginAct":$.trim($("#create-loginact").val()),
+						"name":$.trim($("#create-name").val()),
+						"email":$.trim($("#create-email").val()),
+						"loginPwd":$.trim($("#create-loginPwd").val()),
+						"deptno":$.trim($("#create-deptno").val()),
+					},
+					type: "post",
+					success:function (data){
+						if (data.success==true)
+						{
+							$("#userAddForm")[0].reset();
+							$("#createUserModal").modal("hide");
+							alert("创建成功");
+
+						}
+						else {
+							alert(data.msg);
+						}
+					}
+				})
+			})
 		})
 		function login(){
 			// alert("执行登录操作123");
@@ -61,9 +89,7 @@ String basePath = request.getScheme() +
 					}
 					else{
 						$("#msg").html(data.msg);
-
 					}
-
 				}
 			})
 		}
@@ -74,9 +100,62 @@ String basePath = request.getScheme() +
 		<img src="image/IMG_7114.JPG" style="width: 100%; height: 90%; position: relative; top: 50px;">
 	</div>
 	<div id="top" style="height: 50px; background-color: #3C3C3C; width: 100%;">
-		<div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">CRM &nbsp;<span style="font-size: 12px;">&copy;2021&nbsp;唐山师范学院-最新版</span></div>
+		<div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">CRM &nbsp;<span style="font-size: 12px;">&copy;2021&nbsp;by-Xp</span></div>
 	</div>
-	
+	<div class="modal fade" id="createUserModal" role="dialog">
+		<div class="modal-dialog" role="document" style="width: 85%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel1">创建员工账号</h4>
+				</div>
+				<div class="modal-body">
+
+					<form id="userAddForm" class="form-horizontal" role="form">
+
+						<div class="form-group">
+							<label for="create-name" class="col-sm-2 control-label">姓名<span style="font-size: 15px; color: red;">*</span></label>
+							<div class="col-sm-10" style="width: 300px;">
+								<input type="text" class="form-control" id="create-name">
+							</div>
+							<label for="create-loginact" class="col-sm-2 control-label">登录名<span style="font-size: 15px; color: red;">*</span></label>
+							<div class="col-sm-10" style="width: 300px;">
+								<input type="text" class="form-control" id="create-loginact">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="create-loginPwd" class="col-sm-2 control-label">密码</label>
+							<div class="col-sm-10" style="width: 300px;">
+								<input type="text" class="form-control" id="create-loginPwd">
+							</div>
+							<label for="create-email" class="col-sm-2 control-label ">邮箱</label>
+							<div class="col-sm-10" style="width: 300px;">
+								<input type="text" class="form-control time" id="create-email">
+							</div>
+						</div>
+						<div class="form-group">
+
+							<label for="create-cost" class="col-sm-2 control-label">部门</label>
+							<div class="col-sm-10" style="width: 300px;">
+								<input type="text" class="form-control" id="create-deptno">
+							</div>
+						</div>
+
+					</form>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">创建</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	<div style="position: absolute; top: 120px; right: 100px;width:450px;height:400px;border:1px solid #D5D5D5">
 		<div style="position: absolute; top: 0px; right: 60px;">
 			<div class="page-header">
@@ -99,6 +178,7 @@ String basePath = request.getScheme() +
                         一定要将按钮的类型设置为button
                         按钮触发的行为应该是由我们自己定义--%>
 					<button type="button" id="submitBtn"  class="btn btn-primary btn-lg btn-block"  style="width: 350px; position: relative;top: 45px;">登录</button>
+					<button type="button" id="createBtn"  class="btn btn-primary btn-lg btn-block"  style="width: 350px; position: relative;top: 45px;">创建账号</button>
 				</div>
 			</form>
 		</div>

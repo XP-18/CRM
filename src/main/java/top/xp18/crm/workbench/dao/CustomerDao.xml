@@ -40,6 +40,51 @@
     <select id="getCustomerByName" resultType="Customer">
         select * from tbl_customer where  name = #{company}
     </select>
+    <select id="forPage" resultType="Customer">
+        select
+        c.id, u.name as owner, c.name, c.website, c.phone, c.createBy, c.createTime, c.editBy, c.editTime, c.contactSummary, c.nextContactTime,
+        c.description, c.address
+        from crm.tbl_customer c join crm.tbl_user u on c.owner=u.id
+        <where>
+            <if test="id != null and id != ''">
+                and id like concat("%",#{id},"%")
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner like concat("%",#{owner},"%")
+            </if>
+            <if test="name != null and name != ''">
+                and namelike concat("%",#{name},"%")
+            </if>
+            <if test="website != null and website != ''">
+                and website like concat("%",#{website},"%")
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone like concat("%",#{phone},"%")
+            </if>
+        </where>
+        order by c.createTime
+        limit #{skipCount},#{pageSize}
+    </select>
+    <select id="getNums" resultType="int">
+        select count(*)  from crm.tbl_customer c join crm.tbl_user u on c.owner=u.id
+        <where>
+            <if test="id != null and id != ''">
+                and id like concat("%",#{id},"%")
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner like concat("%",#{owner},"%")
+            </if>
+            <if test="name != null and name != ''">
+                and namelike concat("%",#{name},"%")
+            </if>
+            <if test="website != null and website != ''">
+                and website like concat("%",#{website},"%")
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone like concat("%",#{phone},"%")
+            </if>
+        </where>
+    </select>
 	
   	
 </mapper>

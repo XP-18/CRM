@@ -4,6 +4,7 @@ import top.xp18.crm.workbench.domain.Tran;
 import top.xp18.crm.workbench.domain.TranHistory;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TranService {
     boolean save(Tran t, String customerName);
@@ -13,4 +14,7 @@ public interface TranService {
     List<TranHistory> getHistoryListByTranId(String TranId);
 
     boolean changeStage(Tran t);
+
+    Map<String, Object> forTranPage(Map map);
+
 }

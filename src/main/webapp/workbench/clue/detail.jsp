@@ -57,39 +57,19 @@ String basePath = request.getScheme() +
 		});
 	//	页面加载完毕后，取出关联的市场活动列表
 		showActivityList();
+		$("#qx").click(function () {
+			$("input[name=xz]").prop("checked", this.checked);
+		})
+		$("#activitySearchBody").on("click", $("input[name=xz]"), function () {
+			$("#qx").prop("checked", $("input[name=xz]").length == $("input[name=xz]:checked").length);
+		})
 
 	//	为关联市场活动模态窗口中的搜索框，绑定事件，通过触发回车键，查询并展现所需的市场活动列表
 		$("#aname").keydown(function (event){
 			if(event.keyCode==13){
 				//展现市场活动列表
 				// alert("展现市场活动列表");
-
-				$.ajax({
-					url:"clue/getActivityListByNameAndNotByClueId.do",
-					data:{
-						"aname":$.trim($("#aname").val()),
-						"clueId":"${c.id}"
-
-					},
-					dataType:"json",
-					type:"get",
-					success:function (data){
-					//	返回市场活动
-						var html="";
-						$.each(data,function (i,n){
-							html +='    <tr>';
-							html +='	<td><input type="checkbox" name="xz" value="'+n.id+'"/></td>';
-							html +='	<td>'+n.name+'</td>';
-							html +='	<td>'+n.startDate+'</td>';
-							html +='	<td>'+n.endDate+'</td>';
-							html +='	<td>'+n.owner+'</td>';
-							html +='    </tr>';
-						})
-						$("#activitySearchBody").html(html);
-
-					}
-
-				})
+				showAbleAct();
 			//	展现完列表后，记得将模态窗口默认的回车行为禁用掉
 				return false;
 			}
@@ -116,14 +96,14 @@ String basePath = request.getScheme() +
 					type:"post",
 					success:function (data){
 					//	返回成功或者失败就可以
-						if(data){
+						if(data==true){
 						//	关联成功之后 刷新关联的市场活动的列表
 							showActivityList();
 
 						//	清除搜索框中的信息,复选框中的勾关掉  清空activitySearchBody中的内容
-
 						//	关闭模态窗口
 							$("#bundModal").modal("hide");
+							$("#activitySearchBody").html("");
 
 						}else{
 							alert("关联市场活动失败");
@@ -132,6 +112,10 @@ String basePath = request.getScheme() +
 				})
 
 			}
+		})
+		$("#bounOpenBtn").click(function () {
+			$("#bundModal").modal("show");
+			showAbleAct();
 		})
 	});
 	function showActivityList(){
@@ -159,6 +143,35 @@ String basePath = request.getScheme() +
 				$("#activityBody").html(html);
 			}
 		})
+	}
+	function showAbleAct(){
+		$.ajax({
+			url:"clue/getActivityListByNameAndNotByClueId.do",
+			data:{
+				"aname":$.trim($("#aname").val()),
+				"clueId":"${c.id}"
+
+			},
+			dataType:"json",
+			type:"get",
+			success:function (data){
+				//	返回市场活动
+				var html="";
+				$.each(data,function (i,n){
+					html +='    <tr>';
+					html +='	<td><input type="checkbox" name="xz" value="'+n.id+'"/></td>';
+					html +='	<td>'+n.name+'</td>';
+					html +='	<td>'+n.startDate+'</td>';
+					html +='	<td>'+n.endDate+'</td>';
+					html +='	<td>'+n.owner+'</td>';
+					html +='    </tr>';
+				})
+				$("#activitySearchBody").html(html);
+
+			}
+
+		});
+
 	}
 	/*
 	* id:要一个关联关系表的id
@@ -212,7 +225,7 @@ String basePath = request.getScheme() +
 					<table id="activityTable" class="table table-hover" style="width: 900px; position: relative;top: 10px;">
 						<thead>
 							<tr style="color: #B3B3B3;">
-								<td><input type="checkbox"/></td>
+								<td><input type="checkbox" id="qx"/></td>
 								<td>名称</td>
 								<td>开始日期</td>
 								<td>结束日期</td>
@@ -226,7 +239,7 @@ String basePath = request.getScheme() +
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.history.back()">取消</button>
 					<button id="bundBtn" type="button" class="btn btn-primary">关联</button>
 				</div>
 			</div>
@@ -401,8 +414,8 @@ String basePath = request.getScheme() +
 		</div>
 		<div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
 			<button type="button" class="btn btn-default" onclick="window.location.href='workbench/clue/convert.jsp?id=${c.id}&fullname=${c.fullname}&appellation=${c.appellation}&company=${c.company}&owner=${c.owner}';"><span class="glyphicon glyphicon-retweet"></span> 转换</button>
-			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span class="glyphicon glyphicon-edit"></span> 编辑</button>
-			<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+<%--			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span class="glyphicon glyphicon-edit"></span> 编辑</button>--%>
+<%--			<button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>--%>
 		</div>
 	</div>
 	
@@ -410,59 +423,59 @@ String basePath = request.getScheme() +
 	<div style="position: relative; top: -70px;">
 		<div style="position: relative; left: 40px; height: 30px;">
 			<div style="width: 300px; color: gray;">名称</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.fullname}${c.appellation}</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.fullname}${c.appellation}&nbsp;&nbsp;</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">所有者</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.owner}</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.owner}&nbsp;&nbsp;</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 10px;">
 			<div style="width: 300px; color: gray;">公司</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.company}</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.company}&nbsp;&nbsp;</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">职位</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.job}</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.job}&nbsp;&nbsp;</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 20px;">
 			<div style="width: 300px; color: gray;">邮箱</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.email}</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.email}&nbsp;&nbsp;</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">公司座机</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.phone}</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.phone}&nbsp;&nbsp;</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 30px;">
 			<div style="width: 300px; color: gray;">公司网站</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.website}</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.website}&nbsp;&nbsp;</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">手机</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.mphone}</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.mphone}&nbsp;&nbsp;</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 40px;">
 			<div style="width: 300px; color: gray;">线索状态</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.state}</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.state}&nbsp;&nbsp;</b></div>
 			<div style="width: 300px;position: relative; left: 450px; top: -40px; color: gray;">线索来源</div>
-			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.source}</b></div>
+			<div style="width: 300px;position: relative; left: 650px; top: -60px;"><b>${c.source}&nbsp;&nbsp;</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px;"></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -60px; left: 450px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 50px;">
 			<div style="width: 300px; color: gray;">创建者</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>${c.createBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${c.createTime}</small></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>${c.createBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${c.createTime}&nbsp;&nbsp;</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 60px;">
 			<div style="width: 300px; color: gray;">修改者</div>
-			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>${c.editBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${c.editTime}</small></div>
+			<div style="width: 500px;position: relative; left: 200px; top: -20px;"><b>${c.editBy}&nbsp;&nbsp;</b><small style="font-size: 10px; color: gray;">${c.editTime}&nbsp;&nbsp;</small></div>
 			<div style="height: 1px; width: 550px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 70px;">
 			<div style="width: 300px; color: gray;">描述</div>
 			<div style="width: 630px;position: relative; left: 200px; top: -20px;">
 				<b>
-					${c.description}
+					${c.description}&nbsp;&nbsp;
 				</b>
 			</div>
 			<div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
@@ -471,21 +484,21 @@ String basePath = request.getScheme() +
 			<div style="width: 300px; color: gray;">联系纪要</div>
 			<div style="width: 630px;position: relative; left: 200px; top: -20px;">
 				<b>
-					${c.contactSummary}
+					${c.contactSummary}&nbsp;&nbsp;
 				</b>
 			</div>
 			<div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
 		</div>
 		<div style="position: relative; left: 40px; height: 30px; top: 90px;">
 			<div style="width: 300px; color: gray;">下次联系时间</div>
-			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.nextContactTime}</b></div>
+			<div style="width: 300px;position: relative; left: 200px; top: -20px;"><b>${c.nextContactTime}&nbsp;&nbsp;</b></div>
 			<div style="height: 1px; width: 400px; background: #D5D5D5; position: relative; top: -20px; "></div>
 		</div>
         <div style="position: relative; left: 40px; height: 30px; top: 100px;">
             <div style="width: 300px; color: gray;">详细地址</div>
             <div style="width: 630px;position: relative; left: 200px; top: -20px;">
                 <b>
-                    ${c.address}
+                    ${c.address}&nbsp;&nbsp;
                 </b>
             </div>
             <div style="height: 1px; width: 850px; background: #D5D5D5; position: relative; top: -20px;"></div>
@@ -493,49 +506,49 @@ String basePath = request.getScheme() +
 	</div>
 	
 	<!-- 备注 -->
-	<div style="position: relative; top: 40px; left: 40px;">
-		<div class="page-header">
-			<h4>备注</h4>
-		</div>
-		
-		<!-- 备注1 -->
-		<div class="remarkDiv" style="height: 60px;">
-			<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
-			<div style="position: relative; top: -40px; left: 40px;" >
-				<h5>哎呦！</h5>
-				<font color="gray">线索</font> <font color="gray">-</font> <b>李四先生-动力节点</b> <small style="color: gray;"> 2017-01-22 10:10:10 由zhangsan</small>
-				<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
-				</div>
-			</div>
-		</div>
-		
-		<!-- 备注2 -->
-		<div class="remarkDiv" style="height: 60px;">
-			<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
-			<div style="position: relative; top: -40px; left: 40px;" >
-				<h5>呵呵！</h5>
-				<font color="gray">线索</font> <font color="gray">-</font> <b>李四先生-动力节点</b> <small style="color: gray;"> 2017-01-22 10:20:10 由zhangsan</small>
-				<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>
-				</div>
-			</div>
-		</div>
-		
-		<div id="remarkDiv" style="background-color: #E6E6E6; width: 870px; height: 90px;">
-			<form role="form" style="position: relative;top: 10px; left: 10px;">
-				<textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"  placeholder="添加备注..."></textarea>
-				<p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
-					<button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-					<button type="button" class="btn btn-primary">保存</button>
-				</p>
-			</form>
-		</div>
-	</div>
+<%--	<div style="position: relative; top: 40px; left: 40px;">--%>
+<%--		<div class="page-header">--%>
+<%--			<h4>备注</h4>--%>
+<%--		</div>--%>
+<%--		--%>
+<%--		<!-- 备注1 -->--%>
+<%--		<div class="remarkDiv" style="height: 60px;">--%>
+<%--			<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">--%>
+<%--			<div style="position: relative; top: -40px; left: 40px;" >--%>
+<%--				<h5>哎呦！</h5>--%>
+<%--				<font color="gray">线索</font> <font color="gray">-</font> <b>李四先生-动力节点</b> <small style="color: gray;"> 2017-01-22 10:10:10 由zhangsan</small>--%>
+<%--				<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">--%>
+<%--					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>--%>
+<%--					&nbsp;&nbsp;&nbsp;&nbsp;--%>
+<%--					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--		</div>--%>
+<%--		--%>
+<%--		<!-- 备注2 -->--%>
+<%--		<div class="remarkDiv" style="height: 60px;">--%>
+<%--			<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">--%>
+<%--			<div style="position: relative; top: -40px; left: 40px;" >--%>
+<%--				<h5>呵呵！</h5>--%>
+<%--				<font color="gray">线索</font> <font color="gray">-</font> <b>李四先生-动力节点</b> <small style="color: gray;"> 2017-01-22 10:20:10 由zhangsan</small>--%>
+<%--				<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">--%>
+<%--					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>--%>
+<%--					&nbsp;&nbsp;&nbsp;&nbsp;--%>
+<%--					<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--		</div>--%>
+<%--		--%>
+<%--		<div id="remarkDiv" style="background-color: #E6E6E6; width: 870px; height: 90px;">--%>
+<%--			<form role="form" style="position: relative;top: 10px; left: 10px;">--%>
+<%--				<textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"  placeholder="添加备注..."></textarea>--%>
+<%--				<p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">--%>
+<%--					<button id="cancelBtn" type="button" class="btn btn-default">取消</button>--%>
+<%--					<button type="button" class="btn btn-primary">保存</button>--%>
+<%--				</p>--%>
+<%--			</form>--%>
+<%--		</div>--%>
+<%--	</div>--%>
 	
 	<!-- 市场活动 -->
 	<div>
@@ -574,7 +587,7 @@ String basePath = request.getScheme() +
 			</div>
 			
 			<div>
-				<a href="javascript:void(0);"  data-toggle="modal" data-target="#bundModal" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
+				<a href="javascript:void(0);"  id="bounOpenBtn" style="text-decoration: none;"><span class="glyphicon glyphicon-plus"></span>关联市场活动</a>
 			</div>
 		</div>
 	</div>

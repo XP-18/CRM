@@ -27,6 +27,14 @@ String basePath = request.getScheme() +
     <script type="text/javascript">
 
 	$(function(){
+		$(".time").datetimepicker({
+			minView: "month",
+			language:  'zh-CN',
+			format: 'yyyy-mm-dd',
+			autoclose: true,
+			todayBtn: true,
+			pickerPosition: "bottom-left"
+		});
 		$("#addBtn").click(function (){
 		    //时间控件
             $(".time").datetimepicker({
@@ -110,6 +118,11 @@ String basePath = request.getScheme() +
 			$("#hidden-startDate").val($.trim($("#search-startDate").val()))
 			$("#hidden-endDate").val($.trim($("#search-endDate").val()))
 			pageList(1,2);
+		})
+		$(document).keyup(function (e) {
+			if (e.keyCode == 13) {
+				$("#searchBtn")[0].click();
+			}
 		})
 
 		//	为全选的复选框绑定事件，触发全选操作

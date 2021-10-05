@@ -1,9 +1,9 @@
 package top.xp18.crm.web.filter;
 
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import top.xp18.crm.settings.domain.DicValue;
 import top.xp18.crm.settings.service.DicService;
 import top.xp18.crm.settings.service.impl.DicServiceImpl;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -16,13 +16,9 @@ public class SysInitListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
 
-        System.out.println("上下文域对象创建了");
-        System.out.println("服务器缓存处理数据字典开始");
-//        event：该参数能够取得监听的对象
-//        监听的什么对象 就能取得什么对象
         ServletContext application=event.getServletContext();
 //        ApplicationContext context= WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-         DicService ds= WebApplicationContextUtils.getWebApplicationContext(event.getServletContext()).getBean(DicServiceImpl.class);
+         DicService ds= (DicService)WebApplicationContextUtils.getWebApplicationContext(event.getServletContext()).getBean("dicServiceImpl");
 //        取数据字典 应该管业务层要七个list 可以打包成为一个map
         Map<String,List<DicValue>> map=ds.getAll();
         Set<String> set=map.keySet();

@@ -91,7 +91,77 @@
                 )
 
     </insert>
-	
+
+    <select id="forPage" resultType="Tran">
+        select
+        t.id, u.name as owner, t.money, t.name, t.expectedDate, c.name as customerId, t.stage, t.type, t.source, t.activityId, n.fullname as contactsId, t.createBy,
+        t.createTime, t.editBy, t.editTime, t.description,n.appellation as contactSummary, t.nextContactTime
+        from crm.tbl_tran t  join tbl_user u
+        on t.owner=u.id  join crm.tbl_customer c on t.customerId=c.id join crm.tbl_contacts n on
+            t.contactsId=n.id
+        <where>
+            <if test="owner != null and owner != ''">
+                and u.name like concat("%",#{owner},"%")
+            </if>
+
+            <if test="name != null and name != ''">
+                and t.name like concat("%",#{name},"%")
+            </if>
+            <if test="customerid != null and customerid != ''">
+                and c.name like concat("%",#{customerid},"%")
+            </if>
+            <if test="stage != null and stage != ''">
+                and t.stage like concat("%",#{stage},"%")
+            </if>
+            <if test="type != null and type != ''">
+                and t.type like concat("%",#{type},"%")
+            </if>
+            <if test="source != null and source != ''">
+                and t.source like concat("%",#{source},"%")
+            </if>
+
+            <if test="contactsid != null and contactsid != ''">
+                and n.fullname ike concat("%",#{contactsid},"%")
+            </if>
+        </where>
+    </select>
+
+    <select id="getNums" resultType="int">
+        select count(*)  from crm.tbl_tran t  join tbl_user u
+        on t.owner=u.id  join crm.tbl_customer c on t.customerId=c.id join crm.tbl_contacts n on
+        t.contactsId=n.id
+        <where>
+            <if test="owner != null and owner != ''">
+                and u.name like concat("%",#{owner},"%")
+            </if>
+
+            <if test="name != null and name != ''">
+                and t.name like concat("%",#{name},"%")
+            </if>
+            <if test="customerid != null and customerid != ''">
+                and c.name like concat("%",#{customerid},"%")
+            </if>
+            <if test="stage != null and stage != ''">
+                and t.stage like concat("%",#{stage},"%")
+            </if>
+            <if test="type != null and type != ''">
+                and t.type like concat("%",#{type},"%")
+            </if>
+            <if test="source != null and source != ''">
+                and t.source like concat("%",#{source},"%")
+            </if>
+
+            <if test="contactsid != null and contactsid != ''">
+                and n.name tactsId ike concat("%",#{contactsid},"%")
+            </if>
+        </where>
+    </select>
+	<select id="getEarts" resultType="map">
+        select count(*) as value,stage as name from tbl_tran group by stage
+    </select>
+    <select id="getTranNums" resultType="int">
+        select count(*) from tbl_tran
+    </select>
   	
 </mapper>
 
